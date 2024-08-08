@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highlight Active Links Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        nav {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            background: rgb(245 245 245 / 82%);
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 10px;
+            box-sizing: border-box;
+            align-items: center;
+            border-radius: 1rem;
+            margin-bottom: 25px;
+            font-size: 25px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+        nav ul li {
+            margin: 0 10px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: gray;
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+        nav ul li a.active {
+            color: white;
+            background-color: black; /* Background color for active link */
+            border-radius: 4px; /* Optional: rounded corners for the background */
+        }
+        section {
+            height: 1600px;
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .spacer {
+            height: 60px; /* Adjust this value based on your nav height to prevent content overlap */
+        }
+
+
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#section1">Section 1</a></li>
+            <li><a href="#section2">Section 2</a></li>
+            <li><a href="#section3">Section 3</a></li>
+        </ul>
+    </nav>
+     <div class="spacer"></div>
+    <section id="section1">
+        <h2>Section 1</h2>
+        <p>Content of Section 1</p>
+    </section>
+    <section id="section2">
+        <h2>Section 2</h2>
+        <p>Content of Section 2</p>
+    </section>
+    <section id="section3">
+        <h2>Section 3</h2>
+        <p>Content of Section 3</p>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const links = document.querySelectorAll('nav ul li a');
+            const sections = document.querySelectorAll('section');
+
+            function setActiveLink() {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= sectionTop - sectionHeight / 3) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink(); // Initial call to highlight the correct link on page load
+        });
+    </script>
+</body>
+</html>
