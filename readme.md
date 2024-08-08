@@ -61,3 +61,32 @@ setActiveLink();</pre>
 
 Этот скрипт позволяет автоматически выделять активную ссылку в навигации, когда пользователь прокручивает страницу. Это обеспечивает удобство для пользователя, так как он всегда видит, в каком разделе сайта находится.
 
+Скрипт целиком:
+<pre>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const links = document.querySelectorAll('nav ul li a');
+            const sections = document.querySelectorAll('section');
+
+            function setActiveLink() {
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= sectionTop - sectionHeight / 3) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+
+                links.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink(); // Initial call to highlight the correct link on page load
+        });
+</pre>
